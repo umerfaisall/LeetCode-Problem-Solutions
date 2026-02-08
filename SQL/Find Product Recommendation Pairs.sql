@@ -1,0 +1,17 @@
+# Write your MySQL query statement below
+SELECT p1.product_id as product1_id,
+       p2.product_id as product2_id,
+       i1.category as product1_category,
+       i2.category as product2_category,
+       count(distinct p1.user_id) as customer_count
+from productpurchases p1
+join productpurchases p2
+     on p1.user_id = p2.user_id
+     and p1.product_id < p2.product_id
+join productInfo i1 
+    on p1.product_id = i1.product_id
+join productInfo i2 
+    on p2.product_id = i2.product_id
+group by p1.product_id, p2.product_id, i1.category, i2.category
+having customer_count >=3
+order by customer_count desc, p1.product_id, p2.product_id, i1.category, i2.category
